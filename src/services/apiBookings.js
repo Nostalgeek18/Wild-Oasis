@@ -134,3 +134,43 @@ export async function getBookings({ filter, sortBy, page}) {
 
   return { data, count };
 }
+
+export async function createEditBooking(newBooking, id) {
+
+  console.log('about to add a new booking mofo');
+  console.log(newBooking);
+
+  return;
+  // 1. Create cabin/edit cabin
+  let query = supabase.from('bookings')
+
+  // A) Create
+  if(!id){
+      query = query
+      .insert([
+      {...newBooking},
+      ])
+      .select()
+      .single();
+
+      //add default values
+      newBooking.status = "unconfirmed"
+  }
+  
+  
+  // B) Edit (note there is no array inside the method)
+  if(id) {
+      query = query.update({... newBooking}).eq("id", id)
+  }
+  
+  //will either create or edit
+  const { data, error } = await query.select().single();
+
+  if(error) {
+      console.error(error)
+      throw new Error('Booking could not be created')
+  }
+
+  return data;
+
+}
