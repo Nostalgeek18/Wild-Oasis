@@ -1,6 +1,7 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 import { PAGE_SIZE } from "../utils/constants";
+import { getCabin } from "./apiCabins";
 
 export async function getBooking(id) {
   const { data, error } = await supabase
@@ -137,15 +138,75 @@ export async function getBookings({ filter, sortBy, page}) {
 
 export async function createEditBooking(newBooking, id) {
 
-  console.log('about to add a new booking mofo');
-  console.log(newBooking);
+  //Calculating total price
+  newBooking.totalPrice = parseFloat(newBooking.cabinPrice) + parseFloat(newBooking.extrasPrice);
 
-  return;
   // 1. Create cabin/edit cabin
   let query = supabase.from('bookings')
 
+    // extra operations and validations
+    try {
+      const cabin = await getCabin(newBooking.cabinId)
+      const {discount, maxCapacity, regularPrice } = cabin;
+      //actual discount to consider from the TOTAL of nights
+      const totalDiscount = discount * newBooking.numNights
+  
+      if(newBooking.numGuests > maxCapacity) {
+        throw new Error(`Number of guests (${newBooking.numGuests}) exceeds the capacity of the cabin (${maxCapacity})`)
+      }
+  
+  
+  
+      //Calculate cabinPrice from numNights x regularPrice of the cabin alone
+      const cabinPrice = parseInt(newBooking.numNights) * parseFloat(regularPrice)
+  
+      //Add cabinPrice field to newBooking obj
+      newBooking["cabinPrice"] = cabinPrice;
+  
+      //Calculate total price : cabinPrice + extras price - TotalDiscount
+      const totalPrice = parseFloat(cabinPrice) + parseFloat(newBooking.extrasPrice) - parseFloat(totalDiscount);
+  
+      //add totalPrice field to newBooking obj
+      newBooking["totalPrice"] = totalPrice
+  
+    }catch (error) {
+      throw error
+    }
+    
+
   // A) Create
   if(!id){
+      // extra operations and validations
+      try {
+        const cabin = await getCabin(newBooking.cabinId)
+        const {discount, maxCapacity, regularPrice } = cabin;
+        //actual discount to consider from the TOTAL of nights
+        const totalDiscount = discount * newBooking.numNights
+    
+        if(newBooking.numGuests > maxCapacity) {
+          throw new Error(`Number of guests (${newBooking.numGuests}) exceeds the capacity of the cabin (${maxCapacity})`)
+        }
+    
+    
+    
+        //Calculate cabinPrice from numNights x regularPrice of the cabin alone
+        const cabinPrice = parseInt(newBooking.numNights) * parseFloat(regularPrice)
+    
+        //Add cabinPrice field to newBooking obj
+        newBooking["cabinPrice"] = cabinPrice;
+    
+        //Calculate total price : cabinPrice + extras price - TotalDiscount
+        const totalPrice = parseFloat(cabinPrice) + parseFloat(newBooking.extrasPrice) - parseFloat(totalDiscount);
+    
+        //add totalPrice field to newBooking obj
+        newBooking["totalPrice"] = totalPrice
+    
+      }catch (error) {
+        throw error
+      }
+
+      newBooking.status = "unconfirmed"
+
       query = query
       .insert([
       {...newBooking},
@@ -153,10 +214,7 @@ export async function createEditBooking(newBooking, id) {
       .select()
       .single();
 
-      //add default values
-      newBooking.status = "unconfirmed"
   }
-  
   
   // B) Edit (note there is no array inside the method)
   if(id) {

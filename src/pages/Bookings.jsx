@@ -2,7 +2,6 @@ import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import BookingTable from "../features/bookings/BookingTable"
 import BookingTableOperations from "../features/bookings/BookingTableOperations"
-import Button from "../ui/Button";
 import AddBooking from "../features/bookings/AddBooking";
 
 function Bookings() {
