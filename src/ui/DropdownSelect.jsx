@@ -39,7 +39,7 @@ const Item = styled.i`
 const SelectBtn = styled.div`
     display: flex;
     height: 40px;
-    background: #fff;
+    background: var(--color-grey-0);
     padding: 20px;
     font-size: 18px;
     font-weight: 400;
@@ -68,7 +68,7 @@ const OptionsWrapper = styled.ul`
   /* top: 80px; */
   overflow-y: auto;
   z-index: 1;
-  background: #fff;
+  background: var(--color-grey-100);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   animation-duration: 0.35s;
   animation-fill-mode: both;
@@ -77,7 +77,7 @@ const OptionsWrapper = styled.ul`
     display: block;
     opacity: 1;
     z-index: 10;
-    ${props.dropdownDirection === 'up' ? 'bottom: 55px;' : 'top: 55px;'}
+    ${props.dropdownDirection === 'up' ? 'bottom: 40px;' : 'top: 40px;'}
     animation-name: ${fadeInUp};
   ` : 'display: none;'}
 `
@@ -91,16 +91,16 @@ const Option = styled.li`
   padding: 0 16px;
   border-radius: 8px;
   align-items: center;
-  background: #fff;
+  background: var(--color-grey-100);
 
   &:hover {
-    background: #f2f2f2
+    background: var(--color-grey-300);
   }
 `
 
 const OptionText = styled.span`
     font-size: 18px;
-    color: #333;
+    color: var(--color-grey-600);
 `
 
 export default function DropdownSelect({choices, onSelect, target }) {
