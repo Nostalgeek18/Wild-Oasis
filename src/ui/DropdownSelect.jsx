@@ -65,7 +65,6 @@ const OptionsWrapper = styled.ul`
   width: 300px;
   max-height: 144px;
   left:0;
-  /* top: 80px; */
   overflow-y: auto;
   z-index: 1;
   background: var(--color-grey-100);

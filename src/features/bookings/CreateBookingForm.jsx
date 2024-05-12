@@ -249,13 +249,6 @@ function CreateBookingForm({ cabinToEdit = {}, onCloseModal}) {
         </>
       </FormRow>
 
-      {/* <FormRow label="Cabin photo">
-        <FileInput 
-        id="image" 
-        accept="image/*"
-        {...register('image', {required : isEditSession ? false : "This field is required"})}/>
-      </FormRow> */}
-
       <FormRow>
         {/* type is an HTML attribute! */}
         <Button variation="secondary" type="reset" onClick={()=>onCloseModal?.()}>

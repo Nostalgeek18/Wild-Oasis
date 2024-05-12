@@ -8,6 +8,7 @@ const StyledDatePicker = styled(DatePicker)`
     border-radius: var(--border-radius-sm);
     padding: 0.8rem 1.2rem;
     box-shadow: var(--shadow-sm);
+    cursor: pointer;
 `;
 
 export default StyledDatePicker
