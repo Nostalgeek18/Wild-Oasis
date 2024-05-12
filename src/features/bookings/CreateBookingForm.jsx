@@ -32,7 +32,7 @@ function CreateBookingForm({ cabinToEdit = {}, onCloseModal}) {
   const { id: editId, ...editValues} = cabinToEdit;
   const isEditSession = Boolean(editId);
 
-  const { control, register, handleSubmit, reset, getValues,setValue, formState } = useForm({
+  const { control, register, handleSubmit, reset,setValue, formState } = useForm({
     defaultValues: isEditSession ? editValues : {}
   });
   
