@@ -3,7 +3,7 @@ import { useCabins } from "./useCabins.js";
 import Empty from "../../ui/Empty.jsx";
 import DropdownSelect from "../../ui/DropdownSelect.jsx";
 
-export default function GuestsDropdown({ onSelect }) {
+export default function CabinsDropdown({ onSelect }) {
 
     const { cabins, isLoading } = useCabins();
 
